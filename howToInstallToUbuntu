@@ -1,0 +1,38 @@
+Sudo apt-get update
+sudo apt install openssh-server fail2ban python3-pip python3-dev libxml2-dev libxslt1-dev zlib1g-dev libsasl2-dev libldap2-dev build-essential libssl-dev libffi-dev libmysqlclient-dev libpq-dev libjpeg8-dev liblcms2-dev libblas-dev libatlas-base-dev git curl python3-venv python3.10-venv fontconfig libxrender1 xfonts-75dpi xfonts-base -y
+wget https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6.1-3/wkhtmltox_0.12.6.1-3.jammy_amd64.deb
+sudo dpkg -i wkhtmltox_0.12.6.1-3.jammy_amd64.deb
+sudo apt-get install -f
+sudo apt install postgresql -y
+sudo -i -u postgres createuser -s farid
+sudo su postgres
+- alter user farid with password 'farid';
+- \du
+- \q
+- exit
+git config --global user.name "faridzare9";
+git config --global user.email "farid.zare9@gmail.com";
+sudo apt install nodejs npm
+cd desktop
+sudo apt --fix-broken install
+sudo dpkg -i odoo_18.0+e.latest_all_odooers_ir.deb
+systemctl status odoo
+sudo systemctl enable odoo
+sudo systemctl start odoo
+systemctl status postgresql
+sudo -u postgres psql
+\du
+ALTER USER odoo WITH SUPERUSER CREATEDB CREATEROLE LOGIN PASSWORD 'odoo';
+\q
+sudo nano /etc/odoo/odoo.conf
+[options]
+db_host = False
+db_port = False
+db_user = odoo
+db_password = odoo
+addons_path = /usr/lib/python3/dist-packages/odoo/addons
+
+
+
+
+
