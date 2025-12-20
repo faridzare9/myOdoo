@@ -6,6 +6,7 @@ sudo apt-get install -f
 sudo apt install postgresql -y
 sudo -i -u postgres createuser -s farid
 sudo su postgres
+psql
 - alter user farid with password 'farid';
 - \du
 - \q
