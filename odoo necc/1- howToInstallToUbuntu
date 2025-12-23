@@ -1,39 +1,69 @@
-Sudo apt-get update
-sudo apt install openssh-server fail2ban python3-pip python3-dev libxml2-dev libxslt1-dev zlib1g-dev libsasl2-dev libldap2-dev build-essential libssl-dev libffi-dev libmysqlclient-dev libpq-dev libjpeg8-dev liblcms2-dev libblas-dev libatlas-base-dev git curl python3-venv python3.10-venv fontconfig libxrender1 xfonts-75dpi xfonts-base -y
-wget https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6.1-3/wkhtmltox_0.12.6.1-3.jammy_amd64.deb
-sudo dpkg -i wkhtmltox_0.12.6.1-3.jammy_amd64.deb
-sudo apt-get install -f
-sudo apt install postgresql -y
-sudo -i -u postgres createuser -s farid
-sudo su postgres
-psql
-- alter user farid with password 'farid';
-- \du
-- \q
-- exit
-git config --global user.name "faridzare9";
-git config --global user.email "farid.zare9@gmail.com";
-sudo apt install nodejs npm
-cd desktop
-sudo apt --fix-broken install
-sudo dpkg -i odoo_18.0+e.latest_all_odooers_ir.deb
-systemctl status odoo
-sudo systemctl enable odoo
-sudo systemctl start odoo
-systemctl status postgresql
-sudo -u postgres psql
-\du
-ALTER USER odoo WITH SUPERUSER CREATEDB CREATEROLE LOGIN PASSWORD 'odoo';
-\q
-sudo nano /etc/odoo/odoo.conf
-[options]
-db_host = False
-db_port = False
-db_user = odoo
-db_password = odoo
-addons_path = /usr/lib/python3/dist-packages/odoo/addons
-
-
-
-
-
+ssh username@server_ip
+sudo apt-get update
+sudo apt-get upgrade
+sudo apt-get install openssh-server
+sudo apt-get install fail2ban
+sudo systemctl start fail2ban
+sudo systemctl enable fail2ban
+sudo systemctl status fail2ban
+sudo apt-get install -y python3-pip
+sudo apt-get install -y python3-dev libxml2-dev libxslt1-dev zlib1g-dev libsasl2-dev libldap2-dev build-essential libssl-dev libffi-dev libmysqlclient-dev libjpeg-dev libpq-dev libjpeg8-dev liblcms2-dev libblas-dev libatlas-base-dev
+sudo apt-get install -y npm
+sudo ln -s /usr/bin/nodejs /usr/bin/node
+sudo npm install -g less less-plugin-clean-css
+sudo apt-get install -y node-less
+sudo apt-get install -y postgresql
+sudo su - postgres
+createuser --createdb --username postgres --no-createrole --superuser --pwprompt odoo19
+exit
+sudo adduser --system --home=/opt/odoo19 --group odoo19
+sudo apt-get install -y git
+sudo su - odoo19 -s /bin/bash
+git clone https://www.github.com/odoo/odoo --depth 1 --branch 19.0 --single-branch .
+exit
+  sudo apt install -y python3-venv
+  sudo python3 -m venv /opt/odoo19/venv
+ sudo -s
+ cd /opt/odoo19/
+ source venv/bin/activate
+  pip install -r requirements.txt
+ sudo wget https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wkhtmltox_0.12.5-1.bionic_amd64.deb
+  sudo wget http://archive.ubuntu.com/ubuntu/pool/main/o/openssl/libssl1.1_1.1.1f-1ubuntu2_amd64.deb
+  sudo dpkg -i libssl1.1_1.1.1f-1ubuntu2_amd64.deb
+  sudo apt-get install -y xfonts-75dpi
+  sudo dpkg -i wkhtmltox_0.12.5-1.bionic_amd64.deb
+  sudo apt install -f
+  deactivate
+  sudo cp /opt/odoo19/debian/odoo.conf /etc/odoo19.conf
+  sudo nano /etc/odoo19.conf
+ [options]
+   ; This is the password that allows database operations:
+   ; admin_passwd = admin
+   db_host = localhost
+   db_port = 5432
+   db_user = odoo19
+   db_password = 123456
+   addons_path = /opt/odoo19/addons
+   logfile = /var/log/odoo/odoo19.log
+  sudo chown odoo19: /etc/odoo19.conf
+   sudo chmod 640 /etc/odoo19.conf
+  sudo mkdir /var/log/odoo
+   sudo chown odoo19:root /var/log/odoo
+ sudo nano /etc/systemd/system/odoo19.service
+[Unit]
+Description=Odoo19
+Documentation=http://www.odoo.com
+[Service]
+# Ubuntu/Debian convention:
+Type=simple
+User=odoo19
+ExecStart=/opt/odoo19/venv/bin/python3.12 /opt/odoo19/odoo-bin -c /etc/odoo19.conf
+[Install]
+WantedBy=default.target
+sudo chmod 755 /etc/systemd/system/odoo19.service
+sudo chown root: /etc/systemd/system/odoo19.service
+sudo systemctl start odoo19.service
+http://<your_domain_or_IP_address>:8069
+sudo tail -f /var/log/odoo/odoo19.log
+sudo systemctl enable odoo19.service
+sudo systemctl restart odoo19.service
