@@ -1,4 +1,4 @@
-ssh username@server_ip
+```ssh username@server_ip
 sudo apt-get update
 sudo apt-get upgrade
 sudo apt-get install openssh-server
@@ -14,8 +14,14 @@ sudo npm install -g less less-plugin-clean-css
 sudo apt-get install -y node-less
 sudo apt-get install -y postgresql
 sudo su - postgres
+```
+
+```
 createuser --createdb --username postgres --no-createrole --superuser --pwprompt odoo19
 exit
+```
+
+```
 sudo adduser --system --home=/opt/odoo19 --group odoo19
 sudo apt-get install -y git
 sudo su - odoo19 -s /bin/bash
@@ -36,6 +42,9 @@ exit
   deactivate
   sudo cp /opt/odoo19/debian/odoo.conf /etc/odoo19.conf
   sudo nano /etc/odoo19.conf
+  ```
+
+  ```
  [options]
    ; This is the password that allows database operations:
    ; admin_passwd = admin
@@ -45,11 +54,17 @@ exit
    db_password = 123456
    addons_path = /opt/odoo19/addons
    logfile = /var/log/odoo/odoo19.log
+  ``` 
+
+  ```
   sudo chown odoo19: /etc/odoo19.conf
    sudo chmod 640 /etc/odoo19.conf
   sudo mkdir /var/log/odoo
    sudo chown odoo19:root /var/log/odoo
  sudo nano /etc/systemd/system/odoo19.service
+ ```
+
+ ```
 [Unit]
 Description=Odoo19
 Documentation=http://www.odoo.com
@@ -60,6 +75,9 @@ User=odoo19
 ExecStart=/opt/odoo19/venv/bin/python3.12 /opt/odoo19/odoo-bin -c /etc/odoo19.conf
 [Install]
 WantedBy=default.target
+```
+
+```
 sudo chmod 755 /etc/systemd/system/odoo19.service
 sudo chown root: /etc/systemd/system/odoo19.service
 sudo systemctl start odoo19.service
@@ -67,3 +85,4 @@ http://<your_domain_or_IP_address>:8069
 sudo tail -f /var/log/odoo/odoo19.log
 sudo systemctl enable odoo19.service
 sudo systemctl restart odoo19.service
+```
